@@ -1,5 +1,11 @@
 ## go-up2b
 
+Support the following image beds:
+- sm.ms
+- imgtu.com
+- gitee.com
+- github.com
+
 ### Commands
 
 ```
