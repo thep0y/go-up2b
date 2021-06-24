@@ -3,7 +3,7 @@
  * @Email: thepoy@163.com
  * @File Name: save_config.go (c) 2021
  * @Created:  2021-06-23 08:07:09
- * @Modified: 2021-06-24 09:45:50
+ * @Modified: 2021-06-24 13:35:11
  */
 
 package commands
@@ -67,7 +67,9 @@ var saveConfigCmd = &cobra.Command{
 	      and select the first one as the default image bed`,
 	Example: `  One configuration or multiple configurations can be saved, and the image bed corresponding to the first configuration passed in is used as the used image bed by default.
   The format of the configuration is %d %s, such as:
-	up2b save 1 "username password" 0 "token username password" ...
+
+	up2b save 1 "username password" 0 "token" ...
+	
   This command will use [ imgtu.com ] as the default image bed.
   The configuration information must be enclosed in double quotation marks, and each field is separated by a space.
   The configuration information format of each image bed is as follows:
