@@ -3,7 +3,7 @@
  * @Email: thepoy@163.com
  * @File Name: http.go
  * @Created: 2021-06-21 09:52:54
- * @Modified: 2021-06-24 11:51:45
+ * @Modified: 2021-06-25 08:27:40
  */
 
 package request
@@ -21,11 +21,13 @@ import (
 	"github.com/thep0y/go-up2b/models"
 )
 
+// Request integrates some methods of network request
 type Request struct {
 	client  *http.Client
 	headers http.Header
 }
 
+// NewRequest returns a new Request
 func NewRequest(headers http.Header) *Request {
 	req := new(Request)
 	req.client = &http.Client{}
@@ -63,6 +65,8 @@ func (r *Request) request(req *http.Request) (*Response, error) {
 	return r.parseResponse(resp)
 }
 
+// Get uses the `get` method to get the response
+// of the specified url
 func (r *Request) Get(url string) (*Response, error) {
 	req, err := http.NewRequest(
 		http.MethodGet,
@@ -94,14 +98,23 @@ func (r *Request) requestWithBody(url, method string, data models.FileData) (*Re
 
 }
 
+// Put uses the `put` method and the specified request
+// body to make a request to the specified URL and get
+// a response
 func (r *Request) Put(url string, data models.FileData) (*Response, error) {
 	return r.requestWithBody(url, http.MethodPut, data)
 }
 
+// Post uses the `post` method and the specified request
+// body to make a request to the specified URL and get
+// a response
 func (r *Request) Post(url string, data models.FileData) (*Response, error) {
 	return r.requestWithBody(url, http.MethodPost, data)
 }
 
+// PostWithoutHeader uses the `post` method and the specified
+// request body to send a request without request headers to
+// the specified URL and get a response
 func (r *Request) PostWithoutHeader(u string, data models.FileData) (*Response, error) {
 	values := make(url.Values)
 	for k, v := range data {
@@ -128,6 +141,8 @@ func (r *Request) PostWithoutHeader(u string, data models.FileData) (*Response, 
 	return r.parseResponse(resp)
 }
 
+// PostMultipartForm uses the `post` method to make a request
+// with a file as the request body
 func (r *Request) PostMultipartForm(url, contentType string, reader io.Reader) (*Response, error) {
 	req, err := http.NewRequest(http.MethodPost, url, reader)
 	if err != nil {
@@ -142,6 +157,8 @@ func (r *Request) PostMultipartForm(url, contentType string, reader io.Reader) (
 	return r.request(req)
 }
 
+// PostWithHeadersWithNoRedirect uses the `post` method to make
+// requests and prohibits redirection
 func PostWithHeadersWithNoRedirect(u string, headers http.Header, data models.FileData) (*http.Response, error) {
 	client := &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {

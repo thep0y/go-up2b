@@ -3,7 +3,7 @@
  * @Email: thepoy@163.com
  * @File Name: version.go (c) 2021
  * @Created:  2021-06-23 08:26:49
- * @Modified: 2021-06-23 08:30:43
+ * @Modified: 2021-06-25 08:32:23
  */
 
 package commands
@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const VERSION string = "0.0.1"
+const VERSION string = "0.0.2"
 
 func init() {
 	rootCmd.AddCommand(versionCmd)
