@@ -3,7 +3,7 @@
  * @Email: thepoy@163.com
  * @File Name: imgtu.go (c) 2021
  * @Created:  2021-06-22 17:51:13
- * @Modified: 2021-06-24 09:17:38
+ * @Modified: 2021-07-03 20:44:15
  */
 
 package apis
@@ -286,33 +286,34 @@ func (i Imgtu) UploadImage(imagePath string) (string, error) {
 }
 
 func (i Imgtu) UploadImages(imagesPath []string) ([]string, error) {
+	var ch = make(chan uploadResult, len(imagesPath))
 
 	var wg sync.WaitGroup
 
-	result := make(map[string]string, len(imagesPath))
-
-	for _, path := range imagesPath {
+	for index, path := range imagesPath {
 		wg.Add(1)
 
-		go func(p string) {
+		go func(index int, p string) {
 			defer wg.Done()
 			u, err := i.UploadImage(p)
-			if err != nil {
+			if err == nil {
+				ch <- uploadResult{index, u}
+			} else {
 				log.Error(err)
 			}
-			result[p] = u
-		}(path)
+		}(index, path)
 	}
 
-	wg.Wait()
+	go func() {
+		wg.Wait()
+		close(ch)
+	}()
 
-	downloadURL := make([]string, 0)
-	for _, p := range imagesPath {
-		if u, ok := result[p]; ok {
-			downloadURL = append(downloadURL, u)
-		}
+	var downloadURL = make([]string, len(imagesPath))
+
+	for r := range ch {
+		downloadURL[r.index] = r.url
 	}
-
 	return downloadURL, nil
 }
 

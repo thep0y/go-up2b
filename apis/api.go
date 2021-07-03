@@ -3,7 +3,7 @@
  * @Email: thepoy@163.com
  * @File Name: interface.go
  * @Created: 2021-06-21 09:52:54
- * @Modified: 2021-06-24 11:49:06
+ * @Modified: 2021-07-03 20:28:29
  */
 
 package apis
@@ -97,4 +97,9 @@ func NewImageBedClient(config models.Config, configGile string) (Client, error) 
 	default:
 		return nil, errors.New("unknown image bed code")
 	}
+}
+
+type uploadResult struct {
+	index int
+	url   string
 }

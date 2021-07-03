@@ -3,7 +3,7 @@
  * @Email: thepoy@163.com
  * @File Name: gitee.go (c) 2021
  * @Created:  2021-06-24 09:18:47
- * @Modified: 2021-06-24 10:50:10
+ * @Modified: 2021-07-03 20:41:38
  */
 
 package apis
@@ -22,6 +22,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/thep0y/go-logger/log"
 	"github.com/thep0y/go-up2b/models"
 	"github.com/thep0y/go-up2b/request"
 	"github.com/tidwall/gjson"
@@ -127,32 +128,35 @@ func (g Gitee) UploadImage(imagePath string) (string, error) {
 }
 
 func (g Gitee) UploadImages(imagesPath []string) ([]string, error) {
+	var ch = make(chan uploadResult, len(imagesPath))
 
 	var wg sync.WaitGroup
 
-	result := make(map[string]string, len(imagesPath))
-
-	for _, path := range imagesPath {
+	for index, path := range imagesPath {
 		wg.Add(1)
 
-		go func(p string) {
+		go func(i int, p string) {
 			defer wg.Done()
+			time.Sleep(time.Millisecond * time.Duration(i*500))
 			u, err := g.UploadImage(p)
 			if err == nil {
-				result[p] = u
+				ch <- uploadResult{i, u}
+			} else {
+				log.Error(err)
 			}
-		}(path)
+		}(index, path)
 	}
 
-	wg.Wait()
+	go func() {
+		wg.Wait()
+		close(ch)
+	}()
 
-	downloadURL := make([]string, 0)
-	for _, p := range imagesPath {
-		if u, ok := result[p]; ok {
-			downloadURL = append(downloadURL, u)
-		}
+	var downloadURL = make([]string, len(imagesPath))
+
+	for r := range ch {
+		downloadURL[r.index] = r.url
 	}
-
 	return downloadURL, nil
 }
 

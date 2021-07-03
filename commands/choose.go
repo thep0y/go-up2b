@@ -1,9 +1,9 @@
 /*
  * @Author: thepoy
  * @Email: thepoy@163.com
- * @File Name: choose.go (c) 2021
+ * @File Name: choose.go
  * @Created:  2021-06-23 08:10:16
- * @Modified: 2021-06-24 11:50:13
+ * @Modified: 2021-07-03 15:41:18
  */
 
 package commands
@@ -44,6 +44,8 @@ func ChooseImageBed(code models.ImageBedCode) error {
 	if err != nil {
 		return err
 	}
+
+	fmt.Printf("switched to [ %s ]\n", code)
 
 	return nil
 }

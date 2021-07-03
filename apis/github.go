@@ -3,7 +3,7 @@
  * @Email: thepoy@163.com
  * @File Name: github.go
  * @Created: 2021-06-21 09:52:54
- * @Modified: 2021-06-24 11:58:09
+ * @Modified: 2021-07-03 20:55:42
  */
 
 package apis
@@ -19,9 +19,9 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"sync"
 	"time"
 
+	"github.com/thep0y/go-logger/log"
 	"github.com/thep0y/go-up2b/models"
 	"github.com/thep0y/go-up2b/request"
 	"github.com/tidwall/gjson"
@@ -98,8 +98,8 @@ func (g Github) UploadImage(imagePath string) (string, error) {
 
 	_, localFilename := filepath.Split(imagePath)
 	data := map[string]string{
-		"content": base64.StdEncoding.EncodeToString(fileBytes),
 		"message": "typora - " + localFilename,
+		"content": base64.StdEncoding.EncodeToString(fileBytes),
 	}
 
 	resp, err := g.request.Put(href, data)
@@ -120,33 +120,16 @@ func (g Github) UploadImage(imagePath string) (string, error) {
 }
 
 func (g Github) UploadImages(imagesPath []string) ([]string, error) {
-
-	var wg sync.WaitGroup
-
-	result := make(map[string]string, len(imagesPath))
-
+	// TODO: github 在使用并发上传时经常返回 409 错误，暂不知如何解决，所以这里改为同步
 	for _, path := range imagesPath {
-		wg.Add(1)
-
-		go func(p string) {
-			defer wg.Done()
-			u, err := g.UploadImage(p)
-			if err == nil {
-				result[p] = u
-			}
-		}(path)
-	}
-
-	wg.Wait()
-
-	downloadURL := make([]string, 0)
-	for _, p := range imagesPath {
-		if u, ok := result[p]; ok {
-			downloadURL = append(downloadURL, u)
+		u, err := g.UploadImage(path)
+		if err != nil {
+			log.Error(err)
+			continue
 		}
+		fmt.Println(u)
 	}
-
-	return downloadURL, nil
+	return nil, nil
 }
 
 func (g Github) BaseURL() string {
