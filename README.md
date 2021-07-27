@@ -5,6 +5,7 @@ Support the following image beds:
 - imgtu.com
 - gitee.com
 - github.com
+- ipfs
 
 ### Commands
 
@@ -80,6 +81,7 @@ Examples:
 	- 1:imgtu.com  => "username password"
 	- 2:gitee.com  => "token username repo folder"
 	- 3:github.com => "token username repo folder"
+  - 4:ipfs       => ""
 
 
 Flags:
