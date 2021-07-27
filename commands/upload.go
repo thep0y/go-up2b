@@ -1,9 +1,9 @@
 /*
  * @Author: thepoy
  * @Email: thepoy@163.com
- * @File Name: upload.go (c) 2021
+ * @File Name: upload.go
  * @Created:  2021-06-23 20:55:15
- * @Modified: 2021-06-24 08:59:57
+ * @Modified: 2021-07-27 15:26:55
  */
 
 package commands

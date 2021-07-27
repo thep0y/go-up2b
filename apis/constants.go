@@ -3,7 +3,7 @@
  * @Email: thepoy@163.com
  * @File Name: constants.go
  * @Created:  2021-06-23 07:52:24
- * @Modified: 2021-07-03 20:16:30
+ * @Modified: 2021-07-27 14:20:50
  */
 
 package apis
@@ -16,4 +16,5 @@ const (
 	IMGTU
 	GITEE
 	GITHUB
+	IPFS
 )

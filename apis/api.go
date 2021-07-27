@@ -1,9 +1,9 @@
 /*
  * @Author: thepoy
  * @Email: thepoy@163.com
- * @File Name: interface.go
+ * @File Name: api.go
  * @Created: 2021-06-21 09:52:54
- * @Modified: 2021-07-03 20:28:29
+ * @Modified: 2021-07-27 15:19:51
  */
 
 package apis
@@ -94,6 +94,12 @@ func NewImageBedClient(config models.Config, configGile string) (Client, error) 
 		github.NewRequest()
 
 		return github, nil
+	case IPFS:
+		ipfs := &Ipfs{}
+		ipfs.MakeHeaders(nil)
+		ipfs.NewRequest()
+
+		return ipfs, nil
 	default:
 		return nil, errors.New("unknown image bed code")
 	}

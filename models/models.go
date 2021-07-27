@@ -3,7 +3,7 @@
  * @Email: thepoy@163.com
  * @File Name: models.go
  * @Created: 2021-06-21 09:52:54
- * @Modified: 2021-06-24 11:55:13
+ * @Modified: 2021-07-27 15:29:53
  */
 
 //go:generate easyjson -all -snake_case $GOFILE
@@ -18,6 +18,7 @@ var (
 		"imgtu.com",
 		"gitee.com",
 		"github.com",
+		"ipfs",
 	}
 )
 
@@ -38,7 +39,7 @@ type Config struct {
 
 	// An array with the same length as the
 	// number of image beds
-	AuthData [4]*LoginInfo
+	AuthData [5]*LoginInfo
 }
 
 // LoginInfo stores the authentication information of

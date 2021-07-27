@@ -1,9 +1,9 @@
 /*
  * @Author: thepoy
  * @Email: thepoy@163.com
- * @File Name: save_config.go (c) 2021
+ * @File Name: save_config.go
  * @Created:  2021-06-23 08:07:09
- * @Modified: 2021-06-24 13:35:11
+ * @Modified: 2021-07-27 15:30:14
  */
 
 package commands
@@ -35,7 +35,7 @@ func SaveConfig(newConfig models.Config) error {
 		return errors.New("the index of the image bed information is incorrect")
 	}
 
-	if config.AuthData != [4]*models.LoginInfo{nil, nil, nil, nil} {
+	if config.AuthData != [5]*models.LoginInfo{nil, nil, nil, nil} {
 		for i, v := range config.AuthData {
 			if v != nil {
 				config.AuthData[i] = v
@@ -77,6 +77,7 @@ var saveConfigCmd = &cobra.Command{
 	- 1:imgtu.com  => "username password"
 	- 2:gitee.com  => "token username repo folder"
 	- 3:github.com => "token username repo folder"
+	- 4:ipfs       => ""
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args)%2 > 0 {
@@ -158,6 +159,8 @@ func parseArgs(code models.ImageBedCode, info string) (*models.LoginInfo, error)
 			Repo:     args[2],
 			Folder:   args[3],
 		}, nil
+	case apis.IPFS:
+		return nil, nil
 	default:
 		return nil, fmt.Errorf("unkown image bed code [ %d ]", code)
 	}
