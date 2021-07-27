@@ -1,9 +1,9 @@
 /*
  * @Author: thepoy
  * @Email: thepoy@163.com
- * @File Name: version.go (c) 2021
+ * @File Name: version.go
  * @Created:  2021-06-23 08:26:49
- * @Modified: 2021-06-25 08:32:23
+ * @Modified: 2021-07-27 16:02:21
  */
 
 package commands
@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const VERSION string = "0.0.2"
+const VERSION string = "0.0.3"
 
 func init() {
 	rootCmd.AddCommand(versionCmd)
